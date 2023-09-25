@@ -25,4 +25,38 @@ class pcb {
     // max and min duration for a process in our system.
     static constexpr osp2023::time_type MAX_DURATION = 100;
     static constexpr osp2023::time_type MIN_DURATION = 10;
+
+    // getters 
+     osp2023::id_type getId() const {
+        return id;
+    }
+
+    osp2023::time_type getTotalTime() const {
+        return total_time;
+    }
+
+    osp2023::time_type getTimeUsed() const {
+        return time_used;
+    }
+
+    osp2023::time_type getTotalWaitTime() const {
+        return total_wait_time;
+    }
+
+    // setters
+    void setId(osp2023::id_type newId) {
+        id = newId;
+    }
+
+    void setTotalTime(osp2023::time_type newTotalTime) {
+        total_time = newTotalTime;
+    }
+
+    void setTimeUsed(osp2023::time_type newTimeUsed) {
+        time_used = newTimeUsed;
+    }
+
+    void setTotalWaitTime(osp2023::time_type newTotalWaitTime) {
+        total_wait_time = newTotalWaitTime;
+    }
 };
