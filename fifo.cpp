@@ -31,14 +31,14 @@ void loadPCB(pcb* selectedProcess) {
 int main(int argc, char** argv) {
     if (argc != 2)
     {
-        std::cout << "incorrect number of args" << std::endl;
+        std::cout << "Incorrect number of args" << std::endl;
         return -1;
     }
     // vector of processes init
     std::vector<pcb> processes;
 
     // open and check data file
-    std::ifstream inputFile(argv[0]);
+    std::ifstream inputFile(argv[1]);
     if (!inputFile.is_open()) {
         std::cout << "Failed to open data file." << std::endl;
         return 1;
@@ -47,12 +47,10 @@ int main(int argc, char** argv) {
     // reading and creating proccesses objects
     std::string line;
     while (std::getline(inputFile, line)) {
-        int commaPos = line.find(',');
+        size_t commaPos = line.find(',');
         if (commaPos != std::string::npos) {
             std::string processIdStr = line.substr(0, commaPos);
             std::string burstTimeStr = line.substr(commaPos + 1);
-
-            std::cout << processIdStr << " " << burstTimeStr << std::endl;
 
             osp2023::id_type processId = std::stoi(processIdStr);
             osp2023::time_type burstTime = std::stoll(burstTimeStr);
@@ -98,8 +96,8 @@ int main(int argc, char** argv) {
 
         // saftey checking to remove correct project
         // in case first project is not selected like it should be
-        int indexToRemove = 0;
-        for (int i = 0; i < processes.size(); ++i) {
+        size_t indexToRemove = 0;
+        for (size_t i = 0; i < processes.size(); ++i) {
             if (processes[i].getId() == nextProcess->getId()) {
                 indexToRemove = i;
                 break;  
