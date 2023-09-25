@@ -24,6 +24,8 @@ class pcb {
     osp2023::time_type turnaround_time;
     osp2023::time_type response_time;
 
+    osp2023::time_type quantum_time;
+
    public:
     // max and min duration for a process in our system.
     static constexpr osp2023::time_type MAX_DURATION = 100;
@@ -54,6 +56,10 @@ class pcb {
         return response_time;
     }
 
+    osp2023::time_type getQuantum() {
+        return quantum_time;
+    }
+
     // setters
     void setId(osp2023::id_type newId) {
         id = newId;
@@ -77,5 +83,9 @@ class pcb {
 
     void setResponseTime(osp2023::time_type newResponse_time) {
         response_time = newResponse_time;
+    }
+
+    void setQuantum(int quantum) {
+        quantum_time = quantum;
     }
 };
