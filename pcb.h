@@ -21,6 +21,9 @@ class pcb {
     osp2023::time_type total_wait_time;
     // what time was this process last on the cpu?
 
+    osp2023::time_type turnaround_time;
+    osp2023::time_type response_time;
+
    public:
     // max and min duration for a process in our system.
     static constexpr osp2023::time_type MAX_DURATION = 100;
@@ -43,6 +46,14 @@ class pcb {
         return total_wait_time;
     }
 
+    osp2023::time_type getTurnaroundTime() const {
+        return turnaround_time;
+    }
+
+    osp2023::time_type getResponseTime() const {
+        return response_time;
+    }
+
     // setters
     void setId(osp2023::id_type newId) {
         id = newId;
@@ -58,5 +69,13 @@ class pcb {
 
     void setTotalWaitTime(osp2023::time_type newTotalWaitTime) {
         total_wait_time = newTotalWaitTime;
+    }
+
+    void setTurnaroundTime(osp2023::time_type newTurnaround_time) {
+        turnaround_time = newTurnaround_time;
+    }
+
+    void setResponseTime(osp2023::time_type newResponse_time) {
+        response_time = newResponse_time;
     }
 };

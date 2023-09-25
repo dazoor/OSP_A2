@@ -73,9 +73,20 @@ int main(int argc, char** argv) {
     inputFile.close();
 
     
+    // keeping track of current time
+    osp2023::time_type currentTime = 0;
+    
     while (!processes.empty()) {
+
+        
         pcb* nextProcess = selectNextProcessFIFO(processes);
         loadPCB(nextProcess);
+
+        
+
+        if (nextProcess->getTimeUsed() == 0) {
+            nextProcess->setResponseTime(currentTime);
+        }
 
         // simulating running the process by updating other process' times
 
@@ -83,6 +94,16 @@ int main(int argc, char** argv) {
         nextProcess->setTotalTime(nextProcess->getTimeUsed() + nextProcess->getTotalTime());
         //total wait tim += (time used - total time);
         nextProcess->setTotalWaitTime(nextProcess->getTimeUsed() - nextProcess->getTotalTime());
+        // turnaround = current time + totaltime
+        nextProcess->setTurnaroundTime(currentTime + nextProcess->getTotalTime());
+
+        //printing values
+        std::cout << "\tBurst time: " << nextProcess->getTotalTime() << "ms\n";
+        std::cout << "\tTurnaround time: " << nextProcess->getTurnaroundTime() << "ms\n";
+        std::cout << "\tResponse time: " << nextProcess->getResponseTime() << "ms\n\n";
+
+        // update current time
+        currentTime += nextProcess->getTotalTime();
 
         // iterate through others to update wait times
         for (std::vector<pcb>::iterator it = processes.begin(); it != processes.end(); ++it) {
