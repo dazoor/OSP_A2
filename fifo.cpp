@@ -28,12 +28,17 @@ void loadPCB(pcb* selectedProcess) {
     }
 }
 
-int main() {
+int main(int argc, char** argv) {
+    if (argc != 2)
+    {
+        std::cout << "incorrect number of args" << std::endl;
+        return -1;
+    }
     // vector of processes init
     std::vector<pcb> processes;
 
     // open and check data file
-    std::ifstream inputFile("datafile.txt");
+    std::ifstream inputFile(argv[0]);
     if (!inputFile.is_open()) {
         std::cout << "Failed to open data file." << std::endl;
         return 1;
@@ -46,6 +51,8 @@ int main() {
         if (commaPos != std::string::npos) {
             std::string processIdStr = line.substr(0, commaPos);
             std::string burstTimeStr = line.substr(commaPos + 1);
+
+            std::cout << processIdStr << " " << burstTimeStr << std::endl;
 
             osp2023::id_type processId = std::stoi(processIdStr);
             osp2023::time_type burstTime = std::stoll(burstTimeStr);
