@@ -75,7 +75,11 @@ int main(int argc, char** argv) {
     
     // keeping track of current time
     osp2023::time_type currentTime = 0;
-    
+    osp2023::time_type totalTurnaround = 0;
+    osp2023::time_type totalWait = 0;
+    osp2023::time_type totalResponse = 0;
+    size_t processNum = processes.size();
+
     while (!processes.empty()) {
 
         
@@ -83,7 +87,7 @@ int main(int argc, char** argv) {
         loadPCB(nextProcess);
 
         
-
+        // set base response time
         if (nextProcess->getTimeUsed() == 0) {
             nextProcess->setResponseTime(currentTime);
         }
@@ -92,18 +96,25 @@ int main(int argc, char** argv) {
 
         //time used += total time;
         nextProcess->setTotalTime(nextProcess->getTimeUsed() + nextProcess->getTotalTime());
-        //total wait tim += (time used - total time);
-        nextProcess->setTotalWaitTime(nextProcess->getTimeUsed() - nextProcess->getTotalTime());
+        //total wait tim = current time;
+        nextProcess->setTotalWaitTime(currentTime);
         // turnaround = current time + totaltime
         nextProcess->setTurnaroundTime(currentTime + nextProcess->getTotalTime());
+
+        
 
         //printing values
         std::cout << "\tBurst time: " << nextProcess->getTotalTime() << "ms\n";
         std::cout << "\tTurnaround time: " << nextProcess->getTurnaroundTime() << "ms\n";
+        std::cout << "\tWaiting time: " << nextProcess->getTotalWaitTime() << "ms\n";
         std::cout << "\tResponse time: " << nextProcess->getResponseTime() << "ms\n\n";
 
         // update current time
         currentTime += nextProcess->getTotalTime();
+
+        totalTurnaround += nextProcess->getTurnaroundTime();
+        totalWait += nextProcess->getTotalWaitTime();
+        totalResponse += nextProcess->getResponseTime();
 
         // iterate through others to update wait times
         for (std::vector<pcb>::iterator it = processes.begin(); it != processes.end(); ++it) {
@@ -128,6 +139,20 @@ int main(int argc, char** argv) {
             processes.erase(processes.begin() + indexToRemove);
         }
     }
+
+    std::cout << "PCB Results: FIFO" << std::endl;
+
+    std::cout << "\t Average Turnaround Time: ";
+    double avgTurnaround = static_cast<double>(totalTurnaround) / processNum;
+    std::cout << avgTurnaround << "ms\n";
+
+    std::cout << "\t Average Waiting Time: ";
+    double avgWait = static_cast<double>(totalWait) / processNum;
+    std::cout << avgWait << "ms\n";
+
+    std::cout << "\t Average Response Time: ";
+    double avgResponse = static_cast<double>(totalResponse) / processNum;
+    std::cout << avgResponse << "ms\n\n";
 
     return 0;
 }
